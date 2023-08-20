@@ -12,21 +12,27 @@ export default defineType({
       validation: (Rule) => Rule.required(),
     }),
     defineField({
-      name: "slug",
-      title: "Slug",
-      type: "slug",
-      options: {
-        source: "title" + "author",
-        maxLength: 96,
-      },
-      validation: (Rule) => Rule.required().error("Provide an unique slug"),
-    }),
-    defineField({
       name: "author",
       title: "Author",
       type: "reference",
       to: { type: "author" },
       validation: (Rule) => Rule.required(),
+    }),
+    defineField({
+      name: "publishedAt",
+      title: "Published at",
+      type: "datetime",
+      validation: (Rule) => Rule.required(),
+    }),
+    defineField({
+      name: "slug",
+      title: "Slug",
+      type: "slug",
+      options: {
+        source: (doc) => `${doc.title}-${doc.publishedAt} `,
+        maxLength: 96,
+      },
+      validation: (Rule) => Rule.required().error("Provide an unique slug"),
     }),
     defineField({
       name: "mainImage",
@@ -45,12 +51,6 @@ export default defineType({
       validation: (Rule) => Rule.required(),
     }),
     defineField({
-      name: "publishedAt",
-      title: "Published at",
-      type: "datetime",
-      validation: (Rule) => Rule.required(),
-    }),
-    defineField({
       name: "body",
       title: "Body",
       type: "blockContent",
@@ -61,12 +61,20 @@ export default defineType({
   preview: {
     select: {
       title: "title",
-      author: "author.name",
+      firstName: "author.firstName",
+      lastName: "author.lastName",
       media: "mainImage",
     },
     prepare(selection) {
-      const { author } = selection
-      return { ...selection, subtitle: author && `by ${author}` }
+      const { firstName, lastName } = selection
+      return {
+        ...selection,
+        subtitle:
+          firstName &&
+          lastName &&
+          `by ${firstName}
+      ${lastName}`,
+      }
     },
   },
 })
