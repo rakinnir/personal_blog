@@ -9,6 +9,24 @@ export async function getPosts() {
 
   return client.fetch(groq`*[_type == "post"]{
   _id,title,
+  author->{
+          "fullName":firstName+lastName,
+          "image":image.asset->url,
+           occupation
+          },
+  "image":mainImage.asset->url,
+  "slug":slug.current,
+
+      
+}`)
+}
+
+export async function getPost(slug: string) {
+  const client = createClient(config)
+
+  return client.fetch(
+    groq`*[_type == "post" && slug.current==$slug][0]{
+  _id,title,
   "slug":slug.current,
   author->{
           "fullName":firstName+lastName,
@@ -19,6 +37,8 @@ export async function getPosts() {
    categories[]->{title},
    body,
    "image":mainImage.asset->url,
-      
-}`)
+
+}`,
+    { slug }
+  )
 }

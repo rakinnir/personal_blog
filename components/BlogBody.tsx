@@ -5,7 +5,7 @@ import { PortableTextBlockComponent } from "@portabletext/react"
 import Link from "next/link"
 import { useEffect, useState } from "react"
 
-type postType = {
+export type postType = {
   _id: string
   slug: string
   title: string
@@ -14,10 +14,10 @@ type postType = {
     image: string
     occupation: string
   }
-  publishedAt: Date
-  categories: { title: string }[]
-  body: PortableTextBlockComponent
   image: string
+  body: PortableTextBlockComponent
+  categories: { title: string }[]
+  publishedAt: Date
 }
 
 function BlogBody() {
@@ -35,7 +35,6 @@ function BlogBody() {
       })
   }, [])
 
-  console.log(posts, errorMessage)
   return (
     <div className="grid gap-12 grid-cols-3 p-28 ">
       {posts &&
@@ -73,7 +72,7 @@ function BlogBody() {
                   </div>
                 </div>
                 <div>
-                  <Link href={`/posts/${post.slug}`}>
+                  <Link href={`/${post.slug}`}>
                     <button className="bg-black text-gray-100 px-3 py-2 rounded-md max-h-[50px] max-w-[100px]">
                       See more
                     </button>
