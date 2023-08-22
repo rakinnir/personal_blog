@@ -1,24 +1,24 @@
 import { apiVersion, dataset, projectId } from "@/sanity.config"
 import { createClient, groq } from "next-sanity"
 
+// config file for initial setup
+export const config = { projectId, dataset, apiVersion, useCdn: true }
+
 export async function getPosts() {
-  const client = createClient({
-    projectId,
-    dataset,
-    apiVersion,
-    useCdn: true,
-  })
+  const client = createClient(config)
 
-  const data = await client.fetch(groq`*[_type == "post"]{
-  _id,
-  catergories,
-  body,
-  title,
-  author,
+  return client.fetch(groq`*[_type == "post"]{
+  _id,title,
   "slug":slug.current,
-  mainImage,
-  publishedAt
+  author->{
+          "fullName":firstName+lastName,
+          "image":image.asset->url,
+           occupation
+          },
+   publishedAt,
+   categories[]->{title},
+   body,
+   "image":mainImage.asset->url,
+      
 }`)
-
-  return data
 }

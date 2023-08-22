@@ -47,6 +47,12 @@ export default defineType({
       validation: (Rule) => Rule.required(),
     }),
     defineField({
+      name: "occupation",
+      title: "Occupation",
+      type: "string",
+      validation: (Rule) => Rule.required(),
+    }),
+    defineField({
       name: "bio",
       title: "Bio",
       type: "array",
