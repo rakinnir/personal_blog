@@ -1,9 +1,9 @@
 /* eslint-disable @next/next/no-img-element */
 "use client"
 import { getPosts } from "@/sanity/sanity-ultis"
-import { PortableTextBlockComponent } from "@portabletext/react"
 import Link from "next/link"
 import { useEffect, useState } from "react"
+import { TypedObject } from "sanity"
 
 export type postType = {
   _id: string
@@ -15,7 +15,7 @@ export type postType = {
     occupation: string
   }
   image: string
-  body: PortableTextBlockComponent
+  body: object[]
   categories: { title: string }[]
   publishedAt: Date
 }
