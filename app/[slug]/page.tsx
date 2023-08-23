@@ -72,7 +72,7 @@ export default function Page({ params }: { params: { slug: string } }) {
               </div>
             </section>
             {/* body section */}
-            <section>
+            <section className="mx-auto">
               <PortableText
                 content={post.body}
                 projectId={projectId}
@@ -94,7 +94,7 @@ export default function Page({ params }: { params: { slug: string } }) {
                   blockquote: (props: any) => (
                     <blockquote
                       {...props}
-                      className="font-semibold text-gray-700 bg-gray-500 py-3 px-12 rounded-md bg-opacity-50"
+                      className="font-semibold text-gray-700 bg-gray-500 py-3 px-12 rounded-md bg-opacity-40 "
                     />
                   ),
 
