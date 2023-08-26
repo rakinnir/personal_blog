@@ -1,17 +1,16 @@
 /* eslint-disable @next/next/no-img-element */
 "use client"
 import { Footer, Header } from "@/components"
-import { postType } from "@/components/BlogBody"
 import { dataset, projectId } from "@/sanity.config"
 import { getPost } from "@/sanity/sanity-ultis"
+import { postType } from "@/type"
 import { useEffect, useState } from "react"
 import PortableText from "react-portable-text"
-import Link from "next/link"
 
 export default function Page({ params }: { params: { slug: string } }) {
+  const slug = params.slug
   const [post, setPost] = useState<postType | undefined>()
   const [errorMessage, setErrorMessage] = useState<string | undefined>()
-  const slug = params.slug
 
   useEffect(() => {
     getPost(slug)
@@ -20,19 +19,16 @@ export default function Page({ params }: { params: { slug: string } }) {
       })
       .catch((error) => {
         setErrorMessage("fetching error")
-        console.log(error)
       })
   }, [slug])
-
-  console.log(post?.body)
 
   return (
     <>
       {post && (
-        <div>
+        <div className="px-28">
           <Header />
           {/* blog post  */}
-          <div className="p-12 w-[80%] grid justify-center items-center gap-12 mx-auto">
+          <div className="grid justify-center items-center gap-12 mx-auto">
             {/* mainImage of blog */}
             <img
               src={post.image}
