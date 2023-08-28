@@ -16,7 +16,7 @@ export async function getPosts() {
           },
   "image":mainImage.asset->url,
   "slug":slug.current,
-
+   categories[]->{title},
       
 }`)
 }

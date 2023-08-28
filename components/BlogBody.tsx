@@ -3,14 +3,24 @@
 
 import { context } from "@/app/context/ContextProvider"
 import category from "@/sanity/schemas/category"
-import { ContextValueType } from "@/type"
+import { ContextValueType, postType } from "@/type"
 import Link from "next/link"
-import { useContext } from "react"
+import { Dispatch, SetStateAction, useContext, useState } from "react"
+
+// type categoriesProps = {
+//   categoriesList: string[]
+//   setCategoriesList: Dispatch<SetStateAction<string[]>>
+// }
 
 function BlogBody() {
   const { posts } = useContext(context) as ContextValueType
+  const [categoriesList, setCategoriesList] = useState<string[]>([])
+  console.log(categoriesList)
+
+  const filteredByCatergories = (posts: postType) => {}
+
   return (
-    <div className="mt-[300px] grid grid-cols-[70%_30%]">
+    <div className="mt-[300px] grid grid-cols-[70%_30%] gap-16">
       <div className="grid gap-12 grid-cols-2">
         {posts &&
           posts.map((post) => (
@@ -58,10 +68,30 @@ function BlogBody() {
             </div>
           ))}
       </div>
-      <div>
-        {/* author name */}
-
-        {/* {category} */}
+      <div className="flex gap-6 font-semibold">
+        {/* {categories} */}
+        {posts?.map((post) =>
+          post.categories
+            .filter((x, i, a) => a.indexOf(x) == i)
+            .map((category) => (
+              <button
+                key={post._id}
+                className="border-2 border-gray-400 rounded-md p-3 h-[50px] hover:bg-black hover:text-white transition-all duration-500"
+                onClick={() => {
+                  if (!categoriesList.includes(category.title)) {
+                    setCategoriesList(() => [...categoriesList, category.title])
+                  } else {
+                    const updatedList = categoriesList.filter(
+                      (cat) => cat != category.title
+                    )
+                    setCategoriesList(() => updatedList)
+                  }
+                }}
+              >
+                {category.title}
+              </button>
+            ))
+        )}
       </div>
     </div>
   )
