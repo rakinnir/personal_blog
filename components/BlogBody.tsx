@@ -5,19 +5,15 @@ import { context } from "@/app/context/ContextProvider"
 import category from "@/sanity/schemas/category"
 import { ContextValueType, postType } from "@/type"
 import Link from "next/link"
-import { Dispatch, SetStateAction, useContext, useState } from "react"
-
-// type categoriesProps = {
-//   categoriesList: string[]
-//   setCategoriesList: Dispatch<SetStateAction<string[]>>
-// }
+import { useContext, useState } from "react"
 
 function BlogBody() {
-  const { posts } = useContext(context) as ContextValueType
-  const [categoriesList, setCategoriesList] = useState<string[]>([])
-  console.log(categoriesList)
+  const { posts, allCategories } = useContext(context) as ContextValueType
+  const [selectedCategories, setSelectedCategories] = useState<string[]>([])
 
-  const filteredByCatergories = (posts: postType) => {}
+  {
+    posts && console.log(posts[0].categories)
+  }
 
   return (
     <div className="mt-[300px] grid grid-cols-[70%_30%] gap-16">
@@ -70,28 +66,30 @@ function BlogBody() {
       </div>
       <div className="flex gap-6 font-semibold">
         {/* {categories} */}
-        {posts?.map((post) =>
-          post.categories
-            .filter((x, i, a) => a.indexOf(x) == i)
-            .map((category) => (
-              <button
-                key={post._id}
-                className="border-2 border-gray-400 rounded-md p-3 h-[50px] hover:bg-black hover:text-white transition-all duration-500"
-                onClick={() => {
-                  if (!categoriesList.includes(category.title)) {
-                    setCategoriesList(() => [...categoriesList, category.title])
-                  } else {
-                    const updatedList = categoriesList.filter(
-                      (cat) => cat != category.title
-                    )
-                    setCategoriesList(() => updatedList)
-                  }
-                }}
-              >
-                {category.title}
-              </button>
-            ))
-        )}
+        {allCategories?.map((category, index) => (
+          <button
+            key={index}
+            className={`border-2 border-gray-400 rounded-md p-3 h-[50px]  transition-colors duration-300 ${
+              selectedCategories.includes(category.title)
+                ? "bg-black text-white border-black"
+                : "bg-white text-black hover:bg-black hover:text-white"
+            }`}
+            onClick={() => {
+              if (!selectedCategories?.includes(category.title)) {
+                setSelectedCategories(() => [
+                  ...selectedCategories,
+                  category.title,
+                ])
+              } else {
+                setSelectedCategories((selectedCategories) =>
+                  selectedCategories.filter((cat) => cat !== category.title)
+                )
+              }
+            }}
+          >
+            {category.title}
+          </button>
+        ))}
       </div>
     </div>
   )

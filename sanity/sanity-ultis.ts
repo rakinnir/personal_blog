@@ -7,6 +7,7 @@ export const config = { projectId, dataset, apiVersion, useCdn: true }
 export async function getPosts() {
   const client = createClient(config)
 
+  // fetching all posts
   return client.fetch(groq`*[_type == "post"]{
   _id,title,
   author->{
@@ -21,6 +22,7 @@ export async function getPosts() {
 }`)
 }
 
+// fetching individual post with content
 export async function getPost(slug: string) {
   const client = createClient(config)
 
@@ -41,4 +43,11 @@ export async function getPost(slug: string) {
 }`,
     { slug }
   )
+}
+
+// fetching all categories
+export async function getCategory() {
+  const client = createClient(config)
+
+  return client.fetch(groq`*[_type == "category"]{title}`)
 }

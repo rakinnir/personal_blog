@@ -5,6 +5,15 @@ export type ContextValueType = {
   setPosts: Dispatch<SetStateAction<postType[] | null>>
   errorMessages: string
   setErrorMessages: Dispatch<SetStateAction<string>>
+  allCategories: { title: string }[] | null
+  setAllCategories: Dispatch<
+    SetStateAction<
+      | {
+          title: string
+        }[]
+      | null
+    >
+  >
 }
 
 export type postType = {
