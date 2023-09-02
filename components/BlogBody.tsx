@@ -2,7 +2,6 @@
 "use client"
 
 import { context } from "@/app/context/ContextProvider"
-import category from "@/sanity/schemas/category"
 import { ContextValueType, postType } from "@/type"
 import Link from "next/link"
 import { useContext, useState } from "react"
@@ -11,15 +10,27 @@ function BlogBody() {
   const { posts, allCategories } = useContext(context) as ContextValueType
   const [selectedCategories, setSelectedCategories] = useState<string[]>([])
 
-  {
-    posts && console.log(posts[0].categories)
+  // post by category
+  const filterFunction = (post: postType) => {
+    if (selectedCategories.length === 0) {
+      return true
+    }
+
+    let matchedValue = 0
+    post.categories.map((cat: { title: string }) => {
+      if (selectedCategories.includes(cat.title)) {
+        matchedValue++
+      }
+    })
+
+    return matchedValue > 0
   }
 
   return (
     <div className="mt-[300px] grid grid-cols-[70%_30%] gap-16">
       <div className="grid gap-12 grid-cols-2">
         {posts &&
-          posts.map((post) => (
+          posts.filter(filterFunction).map((post) => (
             <div
               key={post._id}
               className="rounded-lg border-2 border-black h-[400px]"
