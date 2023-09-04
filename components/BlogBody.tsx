@@ -10,8 +10,9 @@ function BlogBody() {
   const { posts, allCategories } = useContext(context) as ContextValueType
   const [selectedCategories, setSelectedCategories] = useState<string[]>([])
 
-  // post by category
+  // filter by category
   const filterFunction = (post: postType) => {
+    // initial load
     if (selectedCategories.length === 0) {
       return true
     }
